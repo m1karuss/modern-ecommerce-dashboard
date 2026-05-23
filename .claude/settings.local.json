@@ -21,7 +21,13 @@
       "Bash(curl -s http://localhost:5001/api/v1/health)",
       "Bash(npx playwright *)",
       "Bash(npx tsx *)",
-      "Bash(curl -s http://localhost:3001)"
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(git mv *)",
+      "Bash(cp -r apps/backend/* server/)",
+      "Bash(cp -r apps/backend/.* server/)",
+      "Bash(cp -r apps/frontend/* client/)",
+      "Bash(cp -r apps/frontend/.* client/)",
+      "Bash(grep -E \"\\\\.md$\")"
     ]
   }
 }

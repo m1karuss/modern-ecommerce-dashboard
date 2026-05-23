@@ -16,7 +16,7 @@ services:
 
   backend:
     build:
-      context: ./apps/backend
+      context: ./server
       dockerfile: Dockerfile
     container_name: ecommerce-backend-prod
     environment:
@@ -44,7 +44,7 @@ services:
 
   frontend:
     build:
-      context: ./apps/frontend
+      context: ./client
       dockerfile: Dockerfile
     container_name: ecommerce-frontend-prod
     depends_on:

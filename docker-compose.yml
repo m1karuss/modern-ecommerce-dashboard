@@ -17,7 +17,7 @@ services:
 
   backend:
     build:
-      context: ./apps/backend
+      context: ./server
       dockerfile: Dockerfile
     container_name: ecommerce-backend
     environment:
@@ -37,7 +37,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./apps/backend:/app
+      - ./server:/app
       - /app/node_modules
     networks:
       - ecommerce-network
@@ -45,7 +45,7 @@ services:
 
   frontend:
     build:
-      context: ./apps/frontend
+      context: ./client
       dockerfile: Dockerfile
     container_name: ecommerce-frontend
     environment:
