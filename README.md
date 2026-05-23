@@ -695,7 +695,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Documentation**: Check our [docs](./docs) folder
 - **Issues**: [GitHub Issues](https://github.com/m1karuss/modern-ecommerce-dashboard/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/m1karuss/modern-ecommerce-dashboard/discussions)
-- **Email**: support@yourdomain.com
 
 ---
 
