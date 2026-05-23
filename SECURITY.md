@@ -18,20 +18,6 @@ We take the security of Modern E-Commerce Dashboard seriously. If you believe yo
 - **Do not** open a public GitHub issue for security vulnerabilities
 - **Do not** disclose the vulnerability publicly until it has been addressed
 
-### How to Report
-
-**Email**: security@yourdomain.com
-
-Please include the following information:
-
-1. **Type of vulnerability** (e.g., SQL injection, XSS, authentication bypass)
-2. **Full paths** of source file(s) related to the vulnerability
-3. **Location** of the affected source code (tag/branch/commit or direct URL)
-4. **Step-by-step instructions** to reproduce the issue
-5. **Proof-of-concept or exploit code** (if possible)
-6. **Impact** of the vulnerability
-7. **Suggested fix** (if you have one)
-
 ### What to Expect
 
 - **Acknowledgment**: We will acknowledge receipt of your vulnerability report within 48 hours
@@ -115,13 +101,6 @@ We recognize security researchers who responsibly disclose vulnerabilities:
 <!-- List will be updated as vulnerabilities are reported and fixed -->
 
 *No vulnerabilities reported yet.*
-
-## Contact
-
-For security-related questions or concerns:
-
-- **Email**: security@yourdomain.com
-- **PGP Key**: [Download PGP Key](https://yourdomain.com/pgp-key.asc)
 
 ## Additional Resources
 
