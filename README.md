@@ -680,20 +680,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Your Name**
-
 - Portfolio: [yourportfolio.com](https://yourportfolio.com)
 - LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
 - GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-
----
 
 ## 🙏 Acknowledgments
 
-- [Shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
-- [Vercel](https://vercel.com) for design inspiration
-- [Prisma](https://www.prisma.io/) for the excellent ORM
-- The open-source community for amazing tools and libraries
+- Shadcn/ui for the beautiful component library
+- Vercel for inspiration
+- The open-source community
 
 ---
 
