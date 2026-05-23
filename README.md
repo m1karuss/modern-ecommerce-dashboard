@@ -680,9 +680,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Your Name**
-- Portfolio: [yourportfolio.com](https://yourportfolio.com)
-- LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@m1karuss](https://github.com/m1karuss)
 
 ## 🙏 Acknowledgments
 
@@ -695,8 +693,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 💬 Support
 
 - **Documentation**: Check our [docs](./docs) folder
-- **Issues**: [GitHub Issues](https://github.com/yourusername/modern-ecommerce-dashboard/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/modern-ecommerce-dashboard/discussions)
+- **Issues**: [GitHub Issues](https://github.com/m1karuss/modern-ecommerce-dashboard/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/m1karuss/modern-ecommerce-dashboard/discussions)
 - **Email**: support@yourdomain.com
 
 ---
@@ -705,7 +703,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you find this project useful, please consider giving it a star on GitHub! It helps others discover the project and motivates continued development.
 
-[![Star on GitHub](https://img.shields.io/github/stars/yourusername/modern-ecommerce-dashboard?style=social)](https://github.com/yourusername/modern-ecommerce-dashboard)
+[![Star on GitHub](https://img.shields.io/github/stars/m1karuss/modern-ecommerce-dashboard?style=social)](https://github.com/m1karuss/modern-ecommerce-dashboard)
 
 ---
 
@@ -713,6 +711,6 @@ If you find this project useful, please consider giving it a star on GitHub! It 
 
 **Built with ❤️ using modern web technologies**
 
-[Report Bug](https://github.com/yourusername/modern-ecommerce-dashboard/issues) · [Request Feature](https://github.com/yourusername/modern-ecommerce-dashboard/issues) · [Documentation](./docs)
+[Report Bug](https://github.com/m1karuss/modern-ecommerce-dashboard/issues) · [Request Feature](https://github.com/m1karuss/modern-ecommerce-dashboard/issues) · [Documentation](./docs)
 
 </div>
