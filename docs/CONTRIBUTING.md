@@ -593,7 +593,7 @@ Update README.md when:
 If you have questions:
 
 1. Check existing [documentation](./README.md)
-2. Search [existing issues](https://github.com/yourusername/modern-ecommerce-dashboard/issues)
+2. Search [existing issues](https://github.com/m1karuss/modern-ecommerce-dashboard/issues)
 3. Create a new issue with the `question` label
 4. Join our community discussions
 
