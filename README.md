@@ -318,19 +318,5 @@ This project follows:
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
-
-**Your Name**
-- Portfolio: [yourportfolio.com](https://yourportfolio.com)
-- LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- GitHub: [@yourusername](https://github.com/yourusername)
-
-## 🙏 Acknowledgments
-
-- Shadcn/ui for the beautiful component library
-- Vercel for inspiration
-- The open-source community
-
----
 
 **⭐ If you find this project useful, please consider giving it a star!**
