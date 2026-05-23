@@ -3,7 +3,7 @@ import { LoginDto, RegisterDto, AuthResponse, AuthTokens } from './auth.types';
 import { hashPassword, comparePassword } from '../../common/utils/hash.util';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../common/utils/token.util';
 import { AppError } from '../../common/utils/app-error.util';
-import { UserStatus } from '@prisma/client';
+import { UserStatus, UserRole } from '@prisma/client';
 
 export class AuthService {
   private authRepository: AuthRepository;
@@ -106,7 +106,7 @@ export class AuthService {
     await this.authRepository.deleteUserRefreshTokens(userId);
   }
 
-  private async generateTokens(userId: string, email: string, role: any): Promise<AuthTokens> {
+  private async generateTokens(userId: string, email: string, role: UserRole): Promise<AuthTokens> {
     const accessToken = generateAccessToken({ userId, email, role });
     const refreshToken = generateRefreshToken({ userId, email, role });
 

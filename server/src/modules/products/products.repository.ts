@@ -166,7 +166,7 @@ export class ProductRepository {
       where: {
         id: { in: ids },
       },
-      data: { status: status as any },
+      data: { status: status as 'ACTIVE' | 'DRAFT' | 'INACTIVE' | 'OUT_OF_STOCK' },
     });
     return result.count;
   }

@@ -26,6 +26,14 @@ export function useOrder(id: string) {
   });
 }
 
+interface ErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 export function useUpdateOrderStatus() {
   const queryClient = useQueryClient();
 
@@ -37,8 +45,9 @@ export function useUpdateOrderStatus() {
       queryClient.setQueryData(ORDERS_KEYS.detail(data.id), data);
       toast.success(`Order status updated to ${data.status}`);
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to update order status');
+    onError: (error: unknown) => {
+      const errorResponse = error as ErrorResponse;
+      toast.error(errorResponse?.response?.data?.message || 'Failed to update order status');
     },
   });
 }

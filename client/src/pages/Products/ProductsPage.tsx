@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, UseFormRegister, FieldErrors, Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -52,9 +52,9 @@ function ProductFormFields({
   errors,
   control,
 }: {
-  register: any;
-  errors: any;
-  control: any;
+  register: UseFormRegister<ProductFormData>;
+  errors: FieldErrors<ProductFormData>;
+  control: Control<ProductFormData>;
 }) {
   return (
     <div className="grid gap-4 py-4">
@@ -198,7 +198,7 @@ export function ProductsPage() {
       sku: product.sku,
       price: product.price,
       stock: product.stock,
-      status: product.status as any,
+      status: product.status as 'ACTIVE' | 'DRAFT' | 'INACTIVE' | 'OUT_OF_STOCK',
       description: '',
       images: product.images || [],
     });

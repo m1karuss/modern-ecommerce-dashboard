@@ -69,6 +69,15 @@ interface BackendPaginatedResponse<T> {
   pagination: { total: number; page: number; limit: number; totalPages: number };
 }
 
+interface OrderStats {
+  total: number;
+  pending: number;
+  processing: number;
+  shipped: number;
+  delivered: number;
+  cancelled: number;
+}
+
 export const ordersApi = {
   // Backend returns { data: Order[], pagination: {...} } at top level
   getAll: (filters: OrdersFilters = {}) =>
@@ -94,5 +103,5 @@ export const ordersApi = {
     api.delete<ApiResponse<void>>(`/orders/${id}`).then((r) => r.data),
 
   getStats: () =>
-    api.get<ApiResponse<any>>('/orders/stats').then((r) => r.data.data),
+    api.get<ApiResponse<OrderStats>>('/orders/stats').then((r) => r.data.data),
 };

@@ -183,7 +183,7 @@ export class OrderRepository {
   async updateStatus(id: string, status: string): Promise<Order> {
     return this.prisma.order.update({
       where: { id },
-      data: { status: status as any },
+      data: { status: status as 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' },
     });
   }
 

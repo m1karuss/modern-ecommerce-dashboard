@@ -14,7 +14,7 @@ export function ImageUpload({ value = [], onChange, maxFiles = 5, disabled = fal
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadImages = async (files: File[]) => {
+  const uploadImages = useCallback(async (files: File[]) => {
     setUploading(true);
     try {
       const formData = new FormData();
@@ -32,7 +32,7 @@ export function ImageUpload({ value = [], onChange, maxFiles = 5, disabled = fal
       if (!response.ok) throw new Error('Upload failed');
 
       const result = await response.json();
-      const uploadedUrls = result.data.map((file: any) => file.url);
+      const uploadedUrls = result.data.map((file: { url: string }) => file.url);
       onChange([...value, ...uploadedUrls].slice(0, maxFiles));
     } catch (error) {
       console.error('Upload error:', error);
@@ -40,7 +40,7 @@ export function ImageUpload({ value = [], onChange, maxFiles = 5, disabled = fal
     } finally {
       setUploading(false);
     }
-  };
+  }, [value, onChange, maxFiles]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -62,10 +62,10 @@ export function ImageUpload({ value = [], onChange, maxFiles = 5, disabled = fal
       );
       const remaining = maxFiles - value.length;
       if (files.length > 0) {
-        uploadImages(files.slice(0, remaining));
+        void uploadImages(files.slice(0, remaining));
       }
     },
-    [disabled, uploading, value.length, maxFiles]
+    [disabled, uploading, value.length, maxFiles, uploadImages]
   );
 
   const handleDragOver = (e: React.DragEvent) => {

@@ -2,6 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { productsApi, ProductsFilters, CreateProductPayload, UpdateProductPayload } from './products.api';
 
+interface ErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 export const PRODUCTS_KEYS = {
   all: ['products'] as const,
   lists: () => [...PRODUCTS_KEYS.all, 'list'] as const,
@@ -35,8 +43,9 @@ export function useCreateProduct() {
       queryClient.invalidateQueries({ queryKey: PRODUCTS_KEYS.lists() });
       toast.success('Product created successfully!');
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to create product');
+    onError: (error: unknown) => {
+      const errorResponse = error as ErrorResponse;
+      toast.error(errorResponse?.response?.data?.message || 'Failed to create product');
     },
   });
 }
@@ -52,8 +61,9 @@ export function useUpdateProduct() {
       queryClient.setQueryData(PRODUCTS_KEYS.detail(data.id), data);
       toast.success('Product updated successfully!');
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to update product');
+    onError: (error: unknown) => {
+      const errorResponse = error as ErrorResponse;
+      toast.error(errorResponse?.response?.data?.message || 'Failed to update product');
     },
   });
 }
@@ -67,8 +77,9 @@ export function useDeleteProduct() {
       queryClient.invalidateQueries({ queryKey: PRODUCTS_KEYS.lists() });
       toast.success('Product deleted successfully!');
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to delete product');
+    onError: (error: unknown) => {
+      const errorResponse = error as ErrorResponse;
+      toast.error(errorResponse?.response?.data?.message || 'Failed to delete product');
     },
   });
 }

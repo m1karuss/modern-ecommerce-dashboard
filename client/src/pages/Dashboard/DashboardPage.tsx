@@ -66,7 +66,17 @@ const TOOLTIP_STYLE = {
   padding: '8px 12px',
 };
 
-function PieTooltip({ active, payload }: any) {
+interface TooltipPayload {
+  name: string;
+  value: number;
+}
+
+interface PieTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayload[];
+}
+
+function PieTooltip({ active, payload }: PieTooltipProps) {
   if (!active || !payload?.length) return null;
   const item = payload[0];
   return (

@@ -121,14 +121,14 @@ export class UserRepository {
   async updateRole(id: string, role: string): Promise<User> {
     return this.prisma.user.update({
       where: { id },
-      data: { role: role as any },
+      data: { role: role as 'ADMIN' | 'MANAGER' | 'USER' },
     });
   }
 
   async updateStatus(id: string, status: string): Promise<User> {
     return this.prisma.user.update({
       where: { id },
-      data: { status: status as any },
+      data: { status: status as 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' },
     });
   }
 

@@ -8,8 +8,16 @@ export const AUTH_KEYS = {
   me: ['auth', 'me'] as const,
 };
 
+interface DemoUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
 // Demo credentials for offline/demo mode
-const DEMO_USERS: Record<string, { password: string; user: any }> = {
+const DEMO_USERS: Record<string, { password: string; user: DemoUser }> = {
   'admin@ecommerce.com': {
     password: 'Admin@123',
     user: {
@@ -22,7 +30,18 @@ const DEMO_USERS: Record<string, { password: string; user: any }> = {
   },
 };
 
-function isServerUnavailable(error: any): boolean {
+interface AxiosErrorResponse {
+  response?: {
+    status: number;
+    data?: {
+      message?: string;
+    };
+  };
+  code?: string;
+  message?: string;
+}
+
+function isServerUnavailable(error: AxiosErrorResponse): boolean {
   if (!error?.response) return true;
   const status = error?.response?.status;
   if (status === 502 || status === 503 || status === 504) return true;
@@ -34,14 +53,20 @@ function isServerUnavailable(error: any): boolean {
   return false;
 }
 
-function tryDemoLogin(email: string, password: string) {
+interface DemoLoginResult {
+  user: DemoUser;
+  accessToken: string;
+  _demo: true;
+}
+
+function tryDemoLogin(email: string, password: string): DemoLoginResult | null {
   const demo = DEMO_USERS[email];
   if (demo && demo.password === password) {
     return {
       user: demo.user,
       accessToken: 'demo-token',
       _demo: true,
-    } as any;
+    };
   }
   return null;
 }
@@ -57,6 +82,16 @@ export function useMe() {
   });
 }
 
+interface LoginResponse {
+  user: DemoUser;
+  accessToken: string;
+  _demo?: boolean;
+}
+
+interface DemoError extends Error {
+  _demoError?: boolean;
+}
+
 export function useLogin() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
@@ -65,8 +100,9 @@ export function useLogin() {
     mutationFn: async (payload: LoginPayload) => {
       try {
         return await authApi.login(payload);
-      } catch (error: any) {
-        if (isServerUnavailable(error)) {
+      } catch (error) {
+        const axiosError = error as AxiosErrorResponse;
+        if (isServerUnavailable(axiosError)) {
           const demoResult = tryDemoLogin(payload.email, payload.password);
           if (demoResult) return demoResult;
           throw Object.assign(new Error('Demo mode: invalid credentials'), {
@@ -76,7 +112,7 @@ export function useLogin() {
         throw error;
       }
     },
-    onSuccess: (data: any) => {
+    onSuccess: (data: LoginResponse) => {
       login(data.user, data.accessToken);
       if (data._demo) {
         toast.info('Running in demo mode — backend is offline', {
@@ -88,16 +124,18 @@ export function useLogin() {
       }
       navigate('/');
     },
-    onError: (error: any) => {
-      if (error._demoError) {
+    onError: (error: Error) => {
+      const demoError = error as DemoError;
+      if (demoError._demoError) {
         toast.error('Invalid demo credentials', {
           description: 'Use admin@ecommerce.com / Admin@123',
         });
         return;
       }
+      const axiosError = error as AxiosErrorResponse;
       const message =
-        error?.response?.data?.message ||
-        (isServerUnavailable(error) ? 'Cannot connect to server' : 'Invalid credentials');
+        axiosError?.response?.data?.message ||
+        (isServerUnavailable(axiosError) ? 'Cannot connect to server' : 'Invalid credentials');
       toast.error(message);
     },
   });
@@ -109,13 +147,14 @@ export function useRegister() {
 
   return useMutation({
     mutationFn: (payload: RegisterPayload) => authApi.register(payload),
-    onSuccess: (data) => {
+    onSuccess: (data: LoginResponse) => {
       login(data.user, data.accessToken);
       toast.success(`Welcome, ${data.user.firstName}! Account created successfully.`);
       navigate('/');
     },
-    onError: (error: any) => {
-      const message = error?.response?.data?.message || 'Registration failed';
+    onError: (error: Error) => {
+      const axiosError = error as AxiosErrorResponse;
+      const message = axiosError?.response?.data?.message || 'Registration failed';
       toast.error(message);
     },
   });
@@ -130,8 +169,9 @@ export function useUpdateProfile() {
       updateUser(user);
       toast.success('Profile updated successfully!');
     },
-    onError: (error: any) => {
-      const message = error?.response?.data?.message || 'Failed to update profile';
+    onError: (error: Error) => {
+      const axiosError = error as AxiosErrorResponse;
+      const message = axiosError?.response?.data?.message || 'Failed to update profile';
       toast.error(message);
     },
   });
@@ -143,8 +183,9 @@ export function useChangePassword() {
     onSuccess: () => {
       toast.success('Password changed successfully!');
     },
-    onError: (error: any) => {
-      const message = error?.response?.data?.message || 'Failed to change password';
+    onError: (error: Error) => {
+      const axiosError = error as AxiosErrorResponse;
+      const message = axiosError?.response?.data?.message || 'Failed to change password';
       toast.error(message);
     },
   });

@@ -84,7 +84,7 @@ api.interceptors.response.use(
 
     // Don't show global toasts — each React Query hook handles its own errors.
     // Only log for debugging in dev mode.
-    const isDev = (import.meta as any).env?.DEV;
+    const isDev = (import.meta.env?.DEV) as boolean;
     if (isDev) {
       const status = error.response?.status;
       const msg = (error.response?.data as { message?: string })?.message;

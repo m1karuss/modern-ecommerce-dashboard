@@ -316,7 +316,7 @@ export function SettingsPage() {
                     ].map((opt) => (
                       <button
                         key={opt.value}
-                        onClick={() => setTheme(opt.value as any)}
+                        onClick={() => setTheme(opt.value as 'light' | 'dark' | 'system')}
                         className={cn(
                           'flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all',
                           theme === opt.value

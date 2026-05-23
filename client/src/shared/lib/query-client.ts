@@ -1,6 +1,14 @@
 import { QueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+interface ErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -10,8 +18,9 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
     },
     mutations: {
-      onError: (error: any) => {
-        const message = error?.response?.data?.message || 'Something went wrong';
+      onError: (error: unknown) => {
+        const errorResponse = error as ErrorResponse;
+        const message = errorResponse?.response?.data?.message || 'Something went wrong';
         toast.error(message);
       },
     },

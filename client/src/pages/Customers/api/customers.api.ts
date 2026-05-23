@@ -34,6 +34,18 @@ interface BackendPaginatedResponse<T> {
   pagination: { total: number; page: number; limit: number; totalPages: number };
 }
 
+interface UserStats {
+  total: number;
+  active: number;
+  inactive: number;
+  suspended: number;
+  byRole: {
+    admin: number;
+    manager: number;
+    user: number;
+  };
+}
+
 export const customersApi = {
   getAll: (filters: CustomersFilters = {}) =>
     api
@@ -56,5 +68,5 @@ export const customersApi = {
     api.delete<ApiResponse<void>>(`/users/${id}`).then((r) => r.data),
 
   getStats: () =>
-    api.get<ApiResponse<any>>('/users/stats').then((r) => r.data.data),
+    api.get<ApiResponse<UserStats>>('/users/stats').then((r) => r.data.data),
 };
