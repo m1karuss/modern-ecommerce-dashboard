@@ -38,19 +38,19 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: apps/backend/package-lock.json
 
       - name: Install dependencies
-        working-directory: apps/backend
         run: npm ci
 
       - name: Generate Prisma Client
-        working-directory: apps/backend
+        working-directory: server
         run: npx prisma generate
 
       - name: Lint
-        working-directory: apps/backend
-        run: npm run lint
+        run: npm run lint --workspace=server
+
+      - name: Test
+        run: npm run test --workspace=server
 
   frontend-test:
     name: Frontend Tests
@@ -65,20 +65,18 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: apps/frontend/package-lock.json
 
       - name: Install dependencies
-        working-directory: apps/frontend
         run: npm ci
 
       - name: Type check
-        working-directory: apps/frontend
-        run: npm run type-check
+        run: npm run type-check --workspace=client
 
       - name: Lint
-        working-directory: apps/frontend
-        run: npm run lint
+        run: npm run lint --workspace=client
+
+      - name: Test
+        run: npm run test --workspace=client
 
       - name: Build
-        working-directory: apps/frontend
-        run: npm run build
+        run: npm run build --workspace=client
