@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem *)",
+      "Bash(docker *)",
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(netstat -ano)",
+      "Bash(Select-Object FullName)",
+      "Bash(npx tsc *)",
+      "Bash(cd apps\\\\\\\\backend)",
+      "PowerShell(npx tsc --noEmit)",
+      "PowerShell(npm install *)",
+      "PowerShell(mkdir *)",
+      "PowerShell(npm test *)",
+      "Bash(npm list *)",
+      "Bash(timeout 5 bash -c 'until curl -s http://localhost:5173 > /dev/null; do sleep 0.5; done')",
+      "Bash(findstr :5001)",
+      "Bash(taskkill *)",
+      "PowerShell(Stop-Process *)",
+      "Bash(curl -s http://localhost:5001/api/v1/health)",
+      "Bash(npx playwright *)",
+      "Bash(npx tsx *)",
+      "Bash(curl -s http://localhost:3001)"
+    ]
+  }
+}

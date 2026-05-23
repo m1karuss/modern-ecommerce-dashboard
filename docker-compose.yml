@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecommerce_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: ecommerce-backend
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ecommerce_dev?schema=public
+      JWT_ACCESS_SECRET: dev-access-secret-key-12345
+      JWT_REFRESH_SECRET: dev-refresh-secret-key-12345
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      CORS_ORIGIN: http://localhost:3000
+      BCRYPT_ROUNDS: 10
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 100
+    ports:
+      - '5000:5000'
+    depends_on:
+      - postgres
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
+    networks:
+      - ecommerce-network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: ecommerce-frontend
+    environment:
+      VITE_API_URL: http://localhost:5000/api/v1
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres_data:
+
+networks:
+  ecommerce-network:
+    driver: bridge

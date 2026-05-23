@@ -1,0 +1,356 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  STRIPE
+  CASH_ON_DELIVERY
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+  DISCONTINUED
+}
+
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  phone         String?
+  avatar        String?
+  role          UserRole    @default(USER)
+  status        UserStatus  @default(ACTIVE)
+
+  emailVerified Boolean     @default(false)
+  lastLoginAt   DateTime?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  orders        Order[]
+  reviews       Review[]
+  addresses     Address[]
+  refreshTokens RefreshToken[]
+  activityLogs  ActivityLog[]
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String
+  action      String
+  entity      String?
+  entityId    String?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+// ============================================
+// PRODUCT MANAGEMENT
+// ============================================
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  parentId    String?
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+
+  @@index([slug])
+  @@index([parentId])
+  @@map("categories")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  slug        String        @unique
+  description String?
+  sku         String        @unique
+
+  price       Decimal       @db.Decimal(10, 2)
+  comparePrice Decimal?     @db.Decimal(10, 2)
+  costPrice   Decimal?      @db.Decimal(10, 2)
+
+  stock       Int           @default(0)
+  lowStockThreshold Int?    @default(10)
+
+  status      ProductStatus @default(DRAFT)
+  isFeatured  Boolean       @default(false)
+
+  weight      Decimal?      @db.Decimal(10, 2)
+  dimensions  Json?
+
+  categoryId  String?
+
+  images      String[]
+  metadata    Json?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  category    Category?     @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  reviews     Review[]
+
+  @@index([slug])
+  @@index([sku])
+  @@index([categoryId])
+  @@index([status])
+  @@index([isFeatured])
+  @@map("products")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  title     String?
+  comment   String?
+
+  productId String
+  userId    String
+
+  isVerified Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([userId])
+  @@index([rating])
+  @@map("reviews")
+}
+
+// ============================================
+// ORDER MANAGEMENT
+// ============================================
+
+model Order {
+  id              String        @id @default(uuid())
+  orderNumber     String        @unique
+
+  userId          String
+
+  status          OrderStatus   @default(PENDING)
+
+  subtotal        Decimal       @db.Decimal(10, 2)
+  tax             Decimal       @db.Decimal(10, 2)
+  shipping        Decimal       @db.Decimal(10, 2)
+  discount        Decimal       @default(0) @db.Decimal(10, 2)
+  total           Decimal       @db.Decimal(10, 2)
+
+  shippingAddressId String?
+  billingAddressId  String?
+
+  notes           String?
+  metadata        Json?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  user            User          @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  payment         Payment?
+  shippingAddress Address?      @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress  Address?      @relation("BillingAddress", fields: [billingAddressId], references: [id])
+
+  @@index([userId])
+  @@index([orderNumber])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  productId   String
+
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  total       Decimal  @db.Decimal(10, 2)
+
+  createdAt   DateTime @default(now())
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  orderId         String        @unique
+
+  amount          Decimal       @db.Decimal(10, 2)
+  currency        String        @default("USD")
+
+  method          PaymentMethod
+  status          PaymentStatus @default(PENDING)
+
+  transactionId   String?       @unique
+
+  metadata        Json?
+
+  paidAt          DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  order           Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([transactionId])
+  @@map("payments")
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  userId      String
+
+  firstName   String
+  lastName    String
+  company     String?
+
+  address1    String
+  address2    String?
+  city        String
+  state       String
+  zipCode     String
+  country     String
+
+  phone       String?
+
+  isDefault   Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  shippingOrders Order[] @relation("ShippingAddress")
+  billingOrders  Order[] @relation("BillingAddress")
+
+  @@index([userId])
+  @@map("addresses")
+}
+
+// ============================================
+// ANALYTICS & REPORTING
+// ============================================
+
+model DailyStat {
+  id          String   @id @default(uuid())
+  date        DateTime @unique @db.Date
+
+  revenue     Decimal  @default(0) @db.Decimal(10, 2)
+  orders      Int      @default(0)
+  customers   Int      @default(0)
+  products    Int      @default(0)
+
+  metadata    Json?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@map("daily_stats")
+}
