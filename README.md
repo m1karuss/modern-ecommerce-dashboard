@@ -85,6 +85,15 @@ A production-ready, full-stack e-commerce admin dashboard built with modern tech
 - **Accessible Components**: WCAG 2.1 AA compliant
 - **Keyboard Navigation**: Full keyboard support
 
+### 🖼️ Image Placeholders System
+- **SVG Placeholders**: Lightweight, scalable placeholder images
+- **Auto Fallback**: Automatic fallback on image load errors
+- **Multiple Types**: Product, avatar, logo, and general image placeholders
+- **React Components**: Ready-to-use `ImageWithFallback` component
+- **Custom Hook**: `usePlaceholder` hook for advanced control
+- **TypeScript Support**: Fully typed for better DX
+- **[View Documentation](./docs/PLACEHOLDERS.md)**
+
 ---
 
 ## 🛠️ Technology Stack
@@ -317,6 +326,7 @@ After seeding the database, use these credentials to login:
 
 - **[API Documentation](./docs/API.md)** - Complete API reference with examples
 - **[Architecture Guide](./docs/ARCHITECTURE.md)** - System design and architecture
+- **[Placeholder Images Guide](./docs/PLACEHOLDERS.md)** - Image placeholders usage and examples
 - **[Contributing Guidelines](./docs/CONTRIBUTING.md)** - How to contribute to the project
 - **[Getting Started Guide](./GETTING_STARTED.md)** - Detailed setup instructions
 

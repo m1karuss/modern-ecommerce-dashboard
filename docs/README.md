@@ -11,6 +11,7 @@ Welcome to the Modern E-Commerce Dashboard documentation!
 ### Development
 - **[Architecture Guide](./ARCHITECTURE.md)** - System design, patterns, and technical decisions
 - **[API Documentation](./API.md)** - Complete API reference with examples
+- **[Placeholder Images Guide](./PLACEHOLDERS.md)** - Image placeholders system and usage
 - **[Contributing Guidelines](./CONTRIBUTING.md)** - How to contribute to the project
 
 ### Deployment & Operations
@@ -44,6 +45,7 @@ docs/
 ├── README.md              # This file - documentation index
 ├── API.md                 # Complete API reference
 ├── ARCHITECTURE.md        # System architecture and design
+├── PLACEHOLDERS.md        # Image placeholders guide
 ├── CONTRIBUTING.md        # Contribution guidelines
 ├── DEPLOYMENT.md          # Deployment instructions
 └── screenshots/           # Application screenshots
