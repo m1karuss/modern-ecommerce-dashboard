@@ -689,7 +689,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
+**ILLYA**
+- Email: i2497247@gmail.com
 - GitHub: [@m1karuss](https://github.com/m1karuss)
 
 ## 🙏 Acknowledgments
